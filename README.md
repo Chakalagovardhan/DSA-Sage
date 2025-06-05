@@ -5,7 +5,23 @@ At its core, the system integrates Spring Boot, Kafka, Redis, and React to facil
 
 
  Tech Stack
-LayerTechnology UsedFrontendReact.js, Tailwind CSSBackendJava 17, Spring Boot, Spring Web, Spring KafkaAI EngineSpring AI (OpenAI Client)MessagingApache KafkaCachingRedisDatabaseNo persistent DB used for this phase (can be extended)DevOpsDocker, Docker Compose
+Layer
+Technology Used
+Frontend
+React.js, Tailwind CSS
+Backend
+Java 17, Spring Boot, Spring Web, Spring Kafka
+AI Engine
+Spring AI (OpenAI Client)
+Messaging
+Apache Kafka
+Caching
+Redis
+Database
+No persistent DB used for this phase (can be extended)
+DevOps
+Docker, Docker Compose
+
                              
  Additional Tools & Libraries
 . Lombok – Simplifies boilerplate code (getters/setters)
@@ -21,18 +37,6 @@ LayerTechnology UsedFrontendReact.js, Tailwind CSSBackendJava 17, Spring Bo
 . Git & GitHub – Version control and source hosting
 
 . VS Code / IntelliJ IDEA – Development environment
-
-
-
-
-
-
-
-
-
-
-
-
 
 Dsa-sage-backend-producer(Dependencies)
 • Spring Web
@@ -59,5 +63,10 @@ For frontend running you need only
 1. just pull from the git
 2. Normally npm build
 3. To run the file npm run dev
+
+Home page of the portal where you need submit the mail Id to get reponse of DSA sheet
+![image](https://github.com/user-attachments/assets/8ba3912e-6668-4156-969d-040129ca6b70)
+The second image represent exam portal where the user reponse is being recorded
+![image](https://github.com/user-attachments/assets/debf26a1-3032-4393-9e0a-725088da189c)
 
 

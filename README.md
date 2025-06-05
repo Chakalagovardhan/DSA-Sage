@@ -5,22 +5,13 @@ At its core, the system integrates Spring Boot, Kafka, Redis, and React to facil
 
 
  Tech Stack
-Layer
-Technology Used
-Frontend
-React.js, Tailwind CSS
-Backend
-Java 17, Spring Boot, Spring Web, Spring Kafka
-AI Engine
-Spring AI (OpenAI Client)
-Messaging
-Apache Kafka
-Caching
-Redis
-Database
-No persistent DB used for this phase (can be extended)
-DevOps
-Docker, Docker Compose
+Layer         Technology Used
+Frontend      React.js, Tailwind CSS
+Backend       Java 17, Spring Boot, Spring Web, Spring Kafka
+AI Engine     Spring AI (OpenAI Client)
+Messaging     Apache Kafka
+Database      No persistent DB used for this phase (can be extended)
+Postman       For testing API endpoints
 
                              
  Additional Tools & Libraries
@@ -52,8 +43,10 @@ Dsa-sage-backend-consumer(Dependencies)
 • Java Mail Sender
 • Open Ai
 • Pdf box (copied form maven)
-
-Note:- You need to have kafka and Zookeper installed and turn on them before you run them and nedd to change the java .properties file like location of the db and the 
+***********************************************************************************************************************************************************************************************
+Note:- You need to have kafka and Zookeper installed and turn on them before you run them and nedd to change the java .properties file like location of the db and the other stuff in your local
+You need to have the nodejs installed to run the react app
+************************************************************************************************************************************************************************************************
 To run Kafka and zookeeper
 1. kafka path:-cd C:\kafka
 2. Zookerper starter:- zookeeper-server-start.bat .\config\zookeeper.properties
@@ -68,5 +61,8 @@ Home page of the portal where you need submit the mail Id to get reponse of DSA 
 ![image](https://github.com/user-attachments/assets/8ba3912e-6668-4156-969d-040129ca6b70)
 The second image represent exam portal where the user reponse is being recorded
 ![image](https://github.com/user-attachments/assets/debf26a1-3032-4393-9e0a-725088da189c)
+
+
+Note:This is like a microservice of the Easy Guide website the navigation to this website done from the Easy Guide website itself it will be clubed into that later
 
 

@@ -10,6 +10,6 @@ public interface Helpers {
 
     public byte[] generatePdf(String str);
 
-    public String StringMaker(Map<String,Integer> reponse);
+    public String StringMaker(Map<String,Integer> reponse, int timeInWeeks,int dailyTime);
 
 }

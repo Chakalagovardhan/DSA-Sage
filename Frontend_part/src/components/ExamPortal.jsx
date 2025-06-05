@@ -1,106 +1,192 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axiosInstance from "../configurations/Appconstants";
 
 const ExamPortal = () => {
-  const question = [
-    "What is JVM?",
-    "What is the use of JRE?",
-    "Explain encapsulation.",
-    "What are the four pillars of OOP?",
-  ];
-  const lengths = question.length;
-
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { questions = [] } = location.state || {};
+  const userEmail = sessionStorage.getItem('userEmail') || '';
+  
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [value, setValue] = useState(1);
+  const [answers, setAnswers] = useState(Array(questions.length).fill(0));
+  const [showTimeModule, setShowTimeModule] = useState(false);
+  const [timeDetails, setTimeDetails] = useState({
+    timeInWeeks: '',
+    dailyTime: ''
+  });
 
-  // Handlers
+  // Update confidence level
+  const updateConfidence = (val) => {
+    const updated = [...answers];
+    updated[currentIndex] = val;
+    setAnswers(updated);
+  };
+
+  // Navigation handlers
   const handleNext = () => {
-    if (currentIndex < lengths - 1) setCurrentIndex((prev) => prev + 1);
+    if (currentIndex < questions.length - 1) setCurrentIndex(prev => prev + 1);
   };
 
   const handlePrevious = () => {
-    if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
+    if (currentIndex > 0) setCurrentIndex(prev => prev - 1);
   };
 
-  return (
-    <div className="flex justify-center items-center bg-black w-screen h-screen">
-      <div className="w-screen h-screen sm:w-[80%] sm:h-[80%] m-auto bg-white rounded-lg flex flex-col justify-around gap-3 p-5">
-        {/* Question Section */}
-        <div className="min-h-[300px] bg-yellow-500 sm:h-2/3 flex justify-center items-center relative">
-          <div className="absolute top-10 right-10 font-semibold text-white">
-            Question: {currentIndex + 1} / {lengths}
+  // Submit confidence levels
+  const handleSubmitConfidence = () => {
+    setShowTimeModule(true);
+  };
+
+  // Handle time details change
+  const handleTimeChange = (e) => {
+    const { name, value } = e.target;
+    setTimeDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Final submission
+  const handleFinalSubmit = () => {
+    // Format the response as Map<String, Integer>
+    const responseMap = {};
+    questions.forEach((question, index) => {
+      responseMap[question] = answers[index];
+    });
+
+    // Prepare the final data object
+    const submissionData = {
+      email: userEmail,
+      response: responseMap,
+      timeInWeeks: parseInt(timeDetails.timeInWeeks),
+      dailyTime: parseInt(timeDetails.dailyTime)
+    };
+
+    console.log("Final Submission Data:", submissionData);
+
+    axiosInstance.post("/send-response", submissionData)
+  .then(response => {
+    alert("Assessment submitted successfully!");
+    navigate("/");
+  })
+  .catch(error => {
+    console.error("Submission error:", error);
+    alert("Failed to submit assessment. Please try again.");
+  });
+  };
+
+  // Time Commitment Module
+  if (showTimeModule) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+        <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
+          <h2 className="text-xl font-bold mb-6 text-center">Study Duration</h2>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block mb-2 font-medium">Total weeks needed:</label>
+              <input 
+                type="number"
+                name="timeInWeeks"
+                min="1"
+                value={timeDetails.timeInWeeks}
+                onChange={handleTimeChange}
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter weeks"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block mb-2 font-medium">Daily study time (hours):</label>
+              <input 
+                type="number"
+                name="dailyTime"
+                min="1"
+                max="24"
+                value={timeDetails.dailyTime}
+                onChange={handleTimeChange}
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter hours per day"
+                required
+              />
+            </div>
+            
+            <button 
+              onClick={handleFinalSubmit}
+              className="w-full mt-6 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+            >
+              Submit Assessment
+            </button>
           </div>
-          <p className="text-xl font-medium text-center px-4">
-            {question[currentIndex]}
-          </p>
-          <button
-            onClick={() => alert("Test Finished!")}
-            disabled={currentIndex !== lengths - 1}
-            className={`p-3 absolute right-10 bottom-10 rounded-md text-white ml-3 bg-red-600 transition-opacity duration-500 ${
-              currentIndex === lengths - 1
-                ? "opacity-100"
-                : "opacity-0 pointer-events-none"
-            }`}
-          >
-            FINISH TEST
-          </button>
         </div>
+      </div>
+    );
+  }
 
-        {/* Confidence Selector */}
-        <div className="bg-pink-600 h-1/3 flex flex-col items-center justify-center gap-4">
-          <p className="text-white text-lg">Confidence level: {value}</p>
-
-          <div className="flex items-center relative justify-between gap-x-6 w-full max-w-sm">
-            {Array.from({ length: 5 }, (_, i) => (
-              <div
-                key={i}
-                onClick={() => setValue(i)}
-                className={`w-8 h-8 sm:w-10 sm:h-10 cursor-pointer flex items-start justify-center rounded-full z-10 
-                    transition-transform duration-300 p-1 ${
-                      i <= value ? "bg-green-500" : "bg-gray-300"
-                    }
-                  `}
-              >
-                {i <= value ? (
-                  <img src="src/Images/coloredBrain.png" alt="colored" />
-                ) : (
-                  <img src="src/Images/grayBrain.png" alt="gray" />
-                )}
-              </div>
-            ))}
-
-            {/* Line Behind */}
-            <div className="absolute top-1/2 left-0 w-full h-2 -translate-y-1/2 bg-gray-300 rounded-full z-0">
-              <div
-                className="h-full bg-green-400 rounded-full transition-all duration-300"
-                style={{ width: `${(value / (5 - 1)) * 100}%` }}
-              ></div>
+  // Main Exam Interface
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      <div className="bg-white rounded-lg shadow-md w-full max-w-2xl">
+        {/* Header */}
+        <div className="bg-blue-600 text-white p-4 rounded-t-lg">
+          <div className="flex justify-between items-center">
+            <h1 className="text-xl font-bold">DSA Confidence Assessment</h1>
+            <div className="bg-blue-700 px-3 py-1 rounded">
+              {currentIndex + 1}/{questions.length}
             </div>
           </div>
-
-          {/* Navigation Buttons */}
-          <div className="w-full h-10 flex justify-between items-center">
+        </div>
+        
+        {/* Question */}
+        <div className="p-6 border-b">
+          <p className="text-lg font-medium">{questions[currentIndex]}</p>
+        </div>
+        
+        {/* Confidence Selector */}
+        <div className="p-6">
+          <div className="flex justify-between mb-6">
+            {[0, 1, 2, 3, 4].map((level) => (
+              <button
+                key={level}
+                onClick={() => updateConfidence(level)}
+                className={`w-12 h-12 rounded-full flex items-center justify-center
+                  ${answers[currentIndex] === level 
+                    ? 'bg-blue-600 text-white' 
+                    : 'bg-gray-200 hover:bg-gray-300'}`}
+              >
+                {level}
+              </button>
+            ))}
+          </div>
+          
+          <div className="flex justify-between mt-8">
             <button
               onClick={handlePrevious}
               disabled={currentIndex === 0}
-              className={`p-3 rounded-md text-white ml-3 ${
-                currentIndex === 0
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-sky-500"
-              }`}
+              className={`px-4 py-2 rounded
+                ${currentIndex === 0 
+                  ? 'bg-gray-300 cursor-not-allowed' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700'}`}
             >
-              PREVIOUS
+              Previous
             </button>
-            <button
-              onClick={handleNext}
-              disabled={currentIndex === lengths - 1}
-              className={`min-w-20 p-3 rounded-md text-white mr-3 ${
-                currentIndex === lengths - 1
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-sky-500"
-              }`}
-            >
-              NEXT
-            </button>
+            
+            {currentIndex === questions.length - 1 ? (
+              <button
+                onClick={handleSubmitConfidence}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              >
+                Submit Confidence Levels
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Next
+              </button>
+            )}
           </div>
         </div>
       </div>

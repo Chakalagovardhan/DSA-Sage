@@ -2,7 +2,7 @@ package com.sage.Dsa_sage_backend_producer.controller;
 
 
 import com.sage.Dsa_sage_backend_producer.entites.Questions;
-import com.sage.Dsa_sage_backend_producer.entites.Response;
+import com.sage.Dsa_sage_backend_producer.entites.UserResponse;
 import com.sage.Dsa_sage_backend_producer.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/reponse")
+@RequestMapping("/response")
 public class AllContoller {
 
     @Autowired
@@ -27,9 +27,8 @@ public class AllContoller {
     }
 
     @PostMapping("/send-response")
-    public ResponseEntity<?> handelResponse(@RequestBody Response response)  {
-        Map<String, String> output = questionService.stringMaker(response);
-            boolean result = questionService.queuePusher(output);
+    public ResponseEntity<?> handelResponse(@RequestBody UserResponse response)  {
+            boolean result = questionService.queuePusher(response);
             return new ResponseEntity<>("Response recorded sucessfully",HttpStatus.OK);
 
 

@@ -34,18 +34,20 @@ public class HelpersImpl implements Helpers {
         return response;
     }
 
-    public String StringMaker(Map<String,Integer> reponse)
+    public String StringMaker(Map<String,Integer> reponse,int timeInWeeks,int dailyTime)
     {
-        StringBuilder chat= new StringBuilder("Give the dsa roadmap fro the following data where i have given my ocnfidence level according " +
-                " to topic and the level using that parameters please genrate a road-map for 30 days daily task dont give study reources" +
-                "the number side of the topic is that the confidence level of the student ratting himself from 1-5 range if the lower the number lower his" +
-                "confidence level so lower confidence give some more time in roadmap dont give extra things direct roadmap ");
+        StringBuilder chat= new StringBuilder("Give the dsa roadmap for the following data where i have given my ocnfidence level according " +
+                " to topic and the level using that parameters please genrate a road-map for"+ timeInWeeks+"  weeks task dont give study reources only give the roadmap to prepare and imp question related to that topic to practice also" +
+                " where i can spend "+dailyTime+" daily each day the number side of the topic is that the confidence level of the student ratting myself from 0-4 range if the lower the number lower his" +
+                "confidence level so lower confidence give some more time in roadmap dont give extra things direct roadmap and note that give in a such way that" +
+                "topic wise dont club if one topic is completed move to another topic dont club them all  ");
 
         Map<String,Integer> result=reponse;
         for(Map.Entry<String,Integer> topic: result.entrySet())
         {
             chat.append(topic.getKey()).append(":").append(topic.getValue()).append(",");
         }
+
         return chat.toString();
     }
 

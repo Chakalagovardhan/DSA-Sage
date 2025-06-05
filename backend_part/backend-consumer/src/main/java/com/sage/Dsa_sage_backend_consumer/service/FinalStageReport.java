@@ -20,7 +20,7 @@ public class FinalStageReport {
     public void studentReportMaker(UserResponse response)
     {
         try{
-            String promptString = helpers.StringMaker(response.getResponse());
+            String promptString = helpers.StringMaker(response.getResponse(), response.getTimeInWeeks(), response.getDailyTime());
             String chatReponse = helpers.chatResponse(promptString);
             byte[] pdfOutput = helpers.generatePdf(chatReponse);
             notification.EmailWithAttachments(response.getEmail(),subject,body,pdfOutput);

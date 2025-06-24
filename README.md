@@ -3,6 +3,7 @@ Dsa-Sage is a powerful, AI-driven platform designed to help students and profess
 
 At its core, the system integrates Spring Boot, Kafka, Redis, and React to facilitate seamless user interaction, dynamic content generation, and intelligent response handling via AI models like ChatGPT.
 
+Demo Video :- https://www.linkedin.com/posts/govardhan-sai-b77928250_dsasage-codingpreparation-springboot-activity-7342997076831571968-WV2O?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD4SyosBZPaVf4nf6e4ctt1vY3Bj7kw9pls
 
  Tech Stack
 Layer         Technology Used
